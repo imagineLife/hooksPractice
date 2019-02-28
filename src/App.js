@@ -8,4 +8,4 @@ import FirstAppHooks from './FirstAppHooks';
 import ToDoApp from './ToDoApp';
 import ToDoAppHooks from './ToDoAppHooks';
 
-ReactDOM.render(<FirstAppHooks />, document.getElementById("app"));
+ReactDOM.render(<ToDoApp />, document.getElementById("app"));
