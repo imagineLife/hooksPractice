@@ -8,11 +8,8 @@ export default function ToDoApp(){
   const [newTodo, updateNewTodo] = useState("")
   const [todos, updateTodos] = useState([])
 
-  handleNewChange(e) {
-    this.setState({
-      newTodo: e.target.value
-    });
-  }
+  const handleNewChange = (e) => updateNewTodo(e.target.value);
+  
   handleNewSubmit(e) {
     e.preventDefault();
     this.setState(prevState => {
