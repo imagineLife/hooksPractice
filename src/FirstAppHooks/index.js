@@ -15,6 +15,21 @@ convertin to hooks
     becomes...
     const [text, setText] = useState("")
 
+    becomes...
+    const [state, setState] = useState({
+      text: "",
+      checked: false
+    })
+
+      NOTE HERE
+      - this useState does not do a shallow merge like the class setState.
+      - need to develop a checker, a shallow merge
+      - here, also, moved the handleChanges back inline with the
+
+  some handleCheckbox approaches 
+  1. const handleCheck = e => setChecked(e.target.checked)
+  2. const handleCheck = e => setChecked(!checked)
+  3. const hanldeCheck = e => setChecked(prevCh => !prevCh)
 
 
 
@@ -22,25 +37,35 @@ convertin to hooks
 
 export default function FirstAppHooks(){
 
-  const [text, setText] = useState("")
-  const [checked, setChecked] = useState(false)
+  const [state, setState] = useState({
+    text: "",
+    checked: false
+  })
+  // const [text, setText] = useState("")
+  // const [checked, setChecked] = useState(false)
+    const mergeState = newState => 
+    setState(prevState => ({
+      ...prevState,
+      ...newState
+    }))
+  const handleChange = e => mergeState({text: e.target.value})
+  const handleCheck = e => mergeState({checked: !state.checked})
 
   return (
     <section>
       <input
         type="text"
-        value={text}
-        onChange={e => setText(e.target.value)}
+        value={state.text}
+        onChange={handleChange}
       />
       <input
         type="checkbox"
-        checked={checked}
-        onChange={e => setChecked(e.target.checked)}
+        checked={state.checked}
+        onChange={handleCheck}
       />
       <ul>
-        <li>{text}</li>
-        <li>{checked.toString()}</li>
-        <li>React version: {React.version}</li>
+        <li>{state.text}</li>
+        <li>{state.checked.toString()}</li>
       </ul>
     </section>
   );
