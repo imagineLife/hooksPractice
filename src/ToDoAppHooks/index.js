@@ -8,17 +8,6 @@ export default function ToDoApp(){
   const [newTodo, updateNewTodo] = useState("")
   const [todos, updateTodos] = useState([])
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      todos: [],
-      newTodo: ""
-    };
-    this.handleNewChange = this.handleNewChange.bind(this);
-    this.handleNewSubmit = this.handleNewSubmit.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleCompletedToggle = this.handleCompletedToggle.bind(this);
-  }
   handleNewChange(e) {
     this.setState({
       newTodo: e.target.value
