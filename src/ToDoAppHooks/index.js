@@ -5,7 +5,14 @@ import { Container, List } from "../Styled";
 import './main.css'
 
 export default function ToDoApp(){
+
+  //get/set for NEW todos
   const [newTodo, updateNewTodo] = useState("")
+
+  //GET localStorage todos
+  const initialToDos = JSON.parse(window.localStorage.getItem("todos") || "[]")
+
+  //get/set for EXISTING todos
   const [todos, updateTodos] = useState([])
 
 
