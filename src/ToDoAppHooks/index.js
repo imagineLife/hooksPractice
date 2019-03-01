@@ -16,6 +16,7 @@ export default function ToDoApp(){
   const initialToDos = () =>
     JSON.parse(window.localStorage.getItem("todos") || "[]");
 
+
   //get/set for EXISTING todos
   const [todos, updateTodos] = useState(initialToDos)
 
@@ -61,6 +62,7 @@ export default function ToDoApp(){
       return () => document.removeEventListener("keydown", handleKeyPress);
 
   }, [])
+  
 
   //"Standard" todo add/update/subtract methods  
   const handleNewChange = (e) => updateNewTodo(e.target.value);
