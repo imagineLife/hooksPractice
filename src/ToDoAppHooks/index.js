@@ -5,6 +5,11 @@ import About from "../About";
 import { Container, List } from "../Styled";
 import './main.css'
 
+//a CUSTOM HOOK!
+const useLocalStorage = (key, defaultVal, cb) => {
+  
+}
+
 export default function ToDoApp(){
 
   //get/set for NEW todos
