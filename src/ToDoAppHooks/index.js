@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NewTodo from "../NewTodo";
 import TodoItem from "../TodoItem";
 import About from "../About";
@@ -10,11 +10,22 @@ export default function ToDoApp(){
   //get/set for NEW todos
   const [newTodo, updateNewTodo] = useState("")
 
-  //GET localStorage todos
-  //NOTE: added a wrapper fn to work with useState,
+  //refs, instantiate with 0
+  const todoID = useRef(0)
+
+  //NOTE: includes a wrapper fn to work with useState,
   // invoked ONCE  to get initial value. This changes localStorage performance for the better
-  const initialToDos = () =>
-    JSON.parse(window.localStorage.getItem("todos") || "[]");
+  const initialToDos = () => {
+
+    const storageVal = JSON.parse(window.localStorage.getItem("todos") || "[]");
+
+    //gets currentId from stored ids
+    todoID.current = storageVal.reduce((memo, todo) => Math.max(memo, todo.id), 0);
+    console.log('todoID')
+    console.log(todoID)
+    
+    return storageVal
+  }
 
 
   //get/set for EXISTING todos
@@ -65,11 +76,22 @@ export default function ToDoApp(){
   const handleNewChange = (e) => updateNewTodo(e.target.value);
 
   const handleNewSubmit = (e) => {
+
     e.preventDefault();
+    
+    //increase the current todoID
+    todoID.current += 1;
+
+    //add the todo 
     updateTodos(prevTodos => [
         ...prevTodos,
-        {id: Date.now(), text: newTodo, completed: false}
+        {
+          id: todoID.current, 
+          text: newTodo, 
+          completed: false
+        }
       ]);
+    
     updateNewTodo("");
   }
 
@@ -82,6 +104,10 @@ export default function ToDoApp(){
       (todo.id == id) ? {...todo, completed: !todo.completed} : todo
     ));
   }
+
+  console.log('todos')
+  console.log(todos)
+  
   
   return (
     <Container todos={todos}>
