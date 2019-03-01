@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NewTodo from "../NewTodo";
 import TodoItem from "../TodoItem";
 import { Container, List } from "../Styled";
@@ -10,11 +10,25 @@ export default function ToDoApp(){
   const [newTodo, updateNewTodo] = useState("")
 
   //GET localStorage todos
-  const initialToDos = JSON.parse(window.localStorage.getItem("todos") || "[]")
+  //NOTE: added a wrapper fn to work with useState,
+  // invoked ONCE  to get initial value. This changes localStorage performance for the better
+  const initialToDos = () =>
+    JSON.parse(window.localStorage.getItem("todos") || "[]");
 
   //get/set for EXISTING todos
   const [todos, updateTodos] = useState(initialToDos)
 
+
+  /*
+    WRITE todos to localstorage
+    NOTE: arr @ end means ONLY run if 'todos' has changed
+  */
+  useEffect(() => {
+    window.localStorage.setItem(
+      "todos",
+      JSON.stringify(todos)
+    );
+  }, [todos])
 
   /*
     
