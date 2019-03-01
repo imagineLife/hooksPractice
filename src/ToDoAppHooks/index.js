@@ -30,6 +30,14 @@ export default function ToDoApp(){
     );
   }, [todos])
 
+
+  //Update doc title
+  useEffect(() => {
+    const inCompleteTodos = todos.reduce(
+      (memo, todo) => (!todo.completed ? memo + 1 : memo),
+      0)
+    document.title = inCompleteTodos ? `Todos (${inCompleteTodos})` : "Todos"
+  })
   /*
     
     componentDidMount() {
