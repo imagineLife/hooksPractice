@@ -24,15 +24,11 @@ export default function ToDoApp(){
   }
   
   const handleCompletedToggle = (id, e) => {
-    setState(prevState => {
-      return {
-        todos: prevState.todos.map(todo =>
-          todo.id === id ? { ...todo, completed: !todo.completed } : todo
-        )
-      };
-    });
+    updateTodos(prevTodos => prevTodos.map(todo =>
+      (todo.id == id) ? {...todo, completed: !todo.completed} : todo
+    ));
   }
-
+  
   return (
     <Container todos={todos}>
       <NewTodo
