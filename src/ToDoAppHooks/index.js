@@ -30,10 +30,21 @@ const useLocalStorage = (localStorageKey, defaultVal, cb) => {
     NOTE: arr @ end means ONLY run if 'todos' has changed
   */
   useEffect(() => {
+    console.log('setting to local storage');
     window.localStorage.setItem(localStorageKey, JSON.stringify(storageval));
   }, [storageval])
 
   return [storageval, setStorageval]
+}
+
+
+//another custom hook!
+//ONLY update title when passedTitle has changed
+//  via the arr @ end
+const useDocTitle = passedTitle => {
+  useEffect(() => {
+    document.title = passedTitle;
+  }, [passedTitle])
 }
 
 export default function ToDoApp(){
@@ -52,12 +63,11 @@ export default function ToDoApp(){
 
   //Update doc title
   //NOTE: no arr @ end means updates EVERY time app updates
-  useEffect(() => {
-    const inCompleteTodos = todos.reduce(
-      (memo, todo) => (!todo.completed ? memo + 1 : memo),
-      0)
-    document.title = inCompleteTodos ? `Todos (${inCompleteTodos})` : "Todos"
-  })
+  const inCompleteTodos = todos.reduce(
+    (memo, todo) => (!todo.completed ? memo + 1 : memo),
+    0)
+  const docTitle = inCompleteTodos ? `Todos (${inCompleteTodos})` : "Todos"
+  useDocTitle(docTitle);
 
 
   //SHOULD about page show or not
@@ -114,10 +124,6 @@ export default function ToDoApp(){
       (todo.id == id) ? {...todo, completed: !todo.completed} : todo
     ));
   }
-
-  console.log('todos')
-  console.log(todos)
-  
   
   return (
     <Container todos={todos}>
