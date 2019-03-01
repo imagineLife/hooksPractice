@@ -6,8 +6,34 @@ import { Container, List } from "../Styled";
 import './main.css'
 
 //a CUSTOM HOOK!
-const useLocalStorage = (key, defaultVal, cb) => {
-  
+const useLocalStorage = (localStorageKey, defaultVal, cb) => {
+
+  //NOTE: includes a wrapper fn to work with useState,
+  // invoked ONCE  to get initial value. This changes localStorage performance for the better
+  const initialValue = () => {
+
+    //GET items from localStorage
+    const storageVal = JSON.parse(window.localStorage.getItem(localStorageKey) || JSON.stringify(defaultVal));
+    
+    if(cb){
+      cb(storageVal)
+    }
+
+    return storageVal
+  }
+
+  //get/set for EXISTING todos
+  const [storageval, setStorageval] = useState(initialValue)
+
+  /*
+    WRITE todos to localstorage
+    NOTE: arr @ end means ONLY run if 'todos' has changed
+  */
+  useEffect(() => {
+    window.localStorage.setItem(localStorageKey, JSON.stringify(storageval));
+  }, [storageval])
+
+  return [storageval, setStorageval]
 }
 
 export default function ToDoApp(){
@@ -18,35 +44,10 @@ export default function ToDoApp(){
   //refs, instantiate with 0
   const todoID = useRef(0)
 
-  //NOTE: includes a wrapper fn to work with useState,
-  // invoked ONCE  to get initial value. This changes localStorage performance for the better
-  const initialToDos = () => {
-
-    const storageVal = JSON.parse(window.localStorage.getItem("todos") || "[]");
-
-    //gets currentId from stored ids
-    todoID.current = storageVal.reduce((memo, todo) => Math.max(memo, todo.id), 0);
-    console.log('todoID')
-    console.log(todoID)
-    
-    return storageVal
-  }
-
-
-  //get/set for EXISTING todos
-  const [todos, updateTodos] = useState(initialToDos)
-
-
-  /*
-    WRITE todos to localstorage
-    NOTE: arr @ end means ONLY run if 'todos' has changed
-  */
-  useEffect(() => {
-    window.localStorage.setItem(
-      "todos",
-      JSON.stringify(todos)
-    );
-  }, [todos])
+  //get todo from localstorage 
+  const [todos, updateTodos] = useLocalStorage("todos", [], resVals => {
+    todoID.current = resVals.reduce((memo, todo) => Math.max(memo, todo.id), 0)
+  })
 
 
   //Update doc title
@@ -61,7 +62,11 @@ export default function ToDoApp(){
 
   //SHOULD about page show or not
   const [showAbout, setShowAbout] = useState(false)
+  
+  //event-lifecycle-maker of sorts
   useEffect(() => {
+    
+    //handleKeyPress listener method
     const handleKeyPress = ({key}) =>
       setShowAbout(show => {
         return (key == "?") ? true :
