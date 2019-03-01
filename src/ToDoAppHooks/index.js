@@ -63,10 +63,9 @@ export default function ToDoApp(){
 
   //Update doc title
   //NOTE: no arr @ end means updates EVERY time app updates
-  const inCompleteTodos = todos.reduce(
-    (memo, todo) => (!todo.completed ? memo + 1 : memo),
-    0)
-  const docTitle = inCompleteTodos ? `Todos (${inCompleteTodos})` : "Todos"
+  const incompleteTodoCount = todos.reduce((memo, todo) => (!todo.completed ? memo + 1 : memo), 0);
+  
+  const docTitle = incompleteTodoCount ? `Todos (${incompleteTodoCount})` : "Todos"
   useDocTitle(docTitle);
 
 
