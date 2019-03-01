@@ -15,19 +15,16 @@ export default function ToDoApp(){
     updateTodos(prevTodos => [
         ...prevTodos,
         {id: Date.now(), text: newTodo, completed: false}
-      ]
-    });
+      ]);
+    updateNewTodo("");
+  }
+
+  const handleDelete = (id, e) => {
+    updateTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
   }
   
-  handleDelete(id, e) {
-    this.setState(prevState => {
-      return {
-        todos: prevState.todos.filter(todo => todo.id !== id)
-      };
-    });
-  }
-  handleCompletedToggle(id, e) {
-    this.setState(prevState => {
+  const handleCompletedToggle = (id, e) => {
+    setState(prevState => {
       return {
         todos: prevState.todos.map(todo =>
           todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -35,28 +32,26 @@ export default function ToDoApp(){
       };
     });
   }
-  render() {
-    const { newTodo, todos } = this.state;
-    return (
-      <Container todos={todos}>
-        <NewTodo
-          onSubmit={this.handleNewSubmit}
-          value={newTodo}
-          onChange={this.handleNewChange}
-        />
-        {!!todos.length && (
-          <List>
-            {todos.map(todo => (
-              <TodoItem
-                key={todo.id}
-                todo={todo}
-                onChange={this.handleCompletedToggle}
-                onDelete={this.handleDelete}
-              />
-            ))}
-          </List>
-        )}
-      </Container>
-    );
-  }
+
+  return (
+    <Container todos={todos}>
+      <NewTodo
+        onSubmit={handleNewSubmit}
+        value={newTodo}
+        onChange={handleNewChange}
+      />
+      {!!todos.length && (
+        <List>
+          {todos.map(todo => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onChange={handleCompletedToggle}
+              onDelete={handleDelete}
+            />
+          ))}
+        </List>
+      )}
+    </Container>
+  );
 }
