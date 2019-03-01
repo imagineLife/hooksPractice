@@ -1,20 +1,53 @@
 import React, { Component } from "react";
 import NewTodo from "../NewTodo";
 import TodoItem from "../TodoItem";
+import About from "../About";
 import { Container, List } from "../Styled";
 import './main.css'
 
-export default class ToDoApp extends Component {
+export default class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       todos: [],
-      newTodo: ""
+      newTodo: "",
+      showAbout: false
     };
     this.handleNewChange = this.handleNewChange.bind(this);
     this.handleNewSubmit = this.handleNewSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleCompletedToggle = this.handleCompletedToggle.bind(this);
+    this.handleKey = this.handleKey.bind(this);
+  }
+  handleKey({ key }) {
+    this.setState(prevState => {
+      return {
+        showAbout:
+          key === "?" ? true : key === "Escape" ? false : prevState.showAbout
+      };
+    });
+  }
+  update(todos) {
+    const inCompleteTodos = todos.reduce(
+      (memo, todo) => (!todo.completed ? memo + 1 : memo),
+      0
+    );
+    document.title = inCompleteTodos ? `Todos (${inCompleteTodos})` : "Todos";
+    window.localStorage.setItem("todos", JSON.stringify(todos));
+  }
+  componentDidMount() {
+    const todos = JSON.parse(window.localStorage.getItem("todos") || "[]");
+    document.addEventListener("keydown", this.handleKey);
+    this.update(todos);
+    this.setState({ todos });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.todos !== this.state.todos) {
+      this.update(this.state.todos);
+    }
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKey);
   }
   handleNewChange(e) {
     this.setState({
@@ -50,7 +83,7 @@ export default class ToDoApp extends Component {
     });
   }
   render() {
-    const { newTodo, todos } = this.state;
+    const { newTodo, todos, showAbout } = this.state;
     return (
       <Container todos={todos}>
         <NewTodo
@@ -70,6 +103,10 @@ export default class ToDoApp extends Component {
             ))}
           </List>
         )}
+        <About
+          isOpen={showAbout}
+          onClose={() => this.setState({ showAbout: false })}
+        />
       </Container>
     );
   }
