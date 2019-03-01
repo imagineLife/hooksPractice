@@ -13,7 +13,7 @@ export default function ToDoApp(){
   const initialToDos = JSON.parse(window.localStorage.getItem("todos") || "[]")
 
   //get/set for EXISTING todos
-  const [todos, updateTodos] = useState([])
+  const [todos, updateTodos] = useState(initialToDos)
 
 
   /*
