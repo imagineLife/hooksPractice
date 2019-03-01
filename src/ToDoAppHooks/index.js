@@ -48,9 +48,6 @@ export default function ToDoApp(){
   useEffect(() => {
     const handleKeyPress = ({key}) =>
       setShowAbout(show => {
-        console.log('key')
-        console.log(key)
-        
         return (key == "?") ? true :
           key == "Escape" ? false : show
       });
@@ -62,7 +59,7 @@ export default function ToDoApp(){
       return () => document.removeEventListener("keydown", handleKeyPress);
 
   }, [])
-  
+
 
   //"Standard" todo add/update/subtract methods  
   const handleNewChange = (e) => updateNewTodo(e.target.value);
