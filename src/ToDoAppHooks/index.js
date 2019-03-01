@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NewTodo from "../NewTodo";
 import TodoItem from "../TodoItem";
+import About from "../About";
 import { Container, List } from "../Styled";
 import './main.css'
 
@@ -32,31 +33,36 @@ export default function ToDoApp(){
 
 
   //Update doc title
+  //NOTE: no arr @ end means updates EVERY time app updates
   useEffect(() => {
     const inCompleteTodos = todos.reduce(
       (memo, todo) => (!todo.completed ? memo + 1 : memo),
       0)
     document.title = inCompleteTodos ? `Todos (${inCompleteTodos})` : "Todos"
   })
-  /*
-    
-    componentDidMount() {
-      const todos = JSON.parse(window.localStorage.getItem("todos") || "[]");
-      document.addEventListener("keydown", this.handleKey);
-      this.update(todos);
-      this.setState({ todos });
-    }
-    componentDidUpdate(prevProps, prevState) {
-      if (prevState.todos !== this.state.todos) {
-        this.update(this.state.todos);
-      }
-    }
-    componentWillUnmount() {
-      document.removeEventListener("keydown", this.handleKey);
-    }
 
-  */
-  
+
+  //SHOULD about page show or not
+  const [showAbout, setShowAbout] = useState(false)
+  useEffect(() => {
+    const handleKeyPress = ({key}) =>
+      setShowAbout(show => {
+        console.log('key')
+        console.log(key)
+        
+        return (key == "?") ? true :
+          key == "Escape" ? false : show
+      });
+      
+      //componentDIDmount code
+      document.addEventListener("keydown", handleKeyPress);
+      
+      //componentWillUnmount code
+      return () => document.removeEventListener("keydown", handleKeyPress);
+
+  }, [])
+
+  //"Standard" todo add/update/subtract methods  
   const handleNewChange = (e) => updateNewTodo(e.target.value);
 
   const handleNewSubmit = (e) => {
@@ -80,11 +86,13 @@ export default function ToDoApp(){
   
   return (
     <Container todos={todos}>
+      
       <NewTodo
         onSubmit={handleNewSubmit}
         value={newTodo}
         onChange={handleNewChange}
       />
+      
       {!!todos.length && (
         <List>
           {todos.map(todo => (
@@ -97,6 +105,11 @@ export default function ToDoApp(){
           ))}
         </List>
       )}
+
+      <About
+          isOpen={showAbout}
+          onClose={() => setShowAbout(false)}
+        />
     </Container>
   );
 }
