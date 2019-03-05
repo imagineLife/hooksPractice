@@ -3,49 +3,13 @@ import NewTodo from "../NewTodo";
 import TodoItem from "../TodoItem";
 import About from "../About";
 import { Container, List } from "../Styled";
+import {useLocalStorage, useDocTitle, useKeyDown} from '../customHooks';
 import './main.css'
-
-//a CUSTOM HOOK!
-const useLocalStorage = (localStorageKey, defaultVal, cb) => {
-
-  //NOTE: includes a wrapper fn to work with useState,
-  // invoked ONCE  to get initial value. This changes localStorage performance for the better
-  const initialValue = () => {
-
-    //GET items from localStorage
-    const storageVal = JSON.parse(window.localStorage.getItem(localStorageKey) || JSON.stringify(defaultVal));
-    
-    if(cb){
-      cb(storageVal)
-    }
-
-    return storageVal
-  }
-
-  //get/set for EXISTING todos
-  const [storageval, setStorageval] = useState(initialValue)
-
-  /*
-    WRITE todos to localstorage
-    NOTE: arr @ end means ONLY run if 'todos' has changed
-  */
-  useEffect(() => {
-    console.log('setting to local storage');
-    window.localStorage.setItem(localStorageKey, JSON.stringify(storageval));
-  }, [storageval])
-
-  return [storageval, setStorageval]
-}
 
 
 //another custom hook!
 //ONLY update title when passedTitle has changed
 //  via the arr @ end
-const useDocTitle = passedTitle => {
-  useEffect(() => {
-    document.title = passedTitle;
-  }, [passedTitle])
-}
 
 export default function ToDoApp(){
 
@@ -71,25 +35,6 @@ export default function ToDoApp(){
 
   //SHOULD about page show or not
   const [showAbout, setShowAbout] = useState(false)
-  
-  //event-lifecycle-maker of sorts
-  useEffect(() => {
-    
-    //handleKeyPress listener method
-    const handleKeyPress = ({key}) =>
-      setShowAbout(show => {
-        return (key == "?") ? true :
-          key == "Escape" ? false : show
-      });
-      
-      //componentDIDmount code
-      document.addEventListener("keydown", handleKeyPress);
-      
-      //componentWillUnmount code
-      return () => document.removeEventListener("keydown", handleKeyPress);
-
-  }, [])
-
 
   //"Standard" todo add/update/subtract methods  
   const handleNewChange = (e) => updateNewTodo(e.target.value);
