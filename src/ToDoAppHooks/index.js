@@ -42,8 +42,10 @@ export default function ToDoApp(){
           }];
       case "DELETE_TODO":
         return state.filter(todo => todo.id !== action.id)
-      case "ADD_TODO":
-        return state;
+      case "TOGGLE_TODO":
+        return state.map(todo =>
+          (todo.id == action.id) ? {...todo, completed: !todo.completed} : todo
+        )
       default:
         return state;
     }
@@ -76,9 +78,7 @@ export default function ToDoApp(){
   }
   
   const handleCompletedToggle = (id, e) => {
-    updateTodos(prevTodos => prevTodos.map(todo =>
-      (todo.id == id) ? {...todo, completed: !todo.completed} : todo
-    ));
+    dispatch({type: "TOGGLE_TODO", id})
   }
   
   return (
