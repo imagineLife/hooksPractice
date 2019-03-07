@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useReducer } from "react";
 import NewTodo from "../NewTodo";
 import TodoItem from "../TodoItem";
 import About from "../About";
@@ -20,9 +20,34 @@ export default function ToDoApp(){
   const todoID = useRef(0)
 
   //get todo from localstorage 
-  const [todos, updateTodos] = useLocalStorage("todos", [], resVals => {
-    todoID.current = resVals.reduce((memo, todo) => Math.max(memo, todo.id), 0)
-  })
+  // const [todos, updateTodos] = useLocalStorage("todos", [], resVals => {
+  //   todoID.current = resVals.reduce((memo, todo) => Math.max(memo, todo.id), 0)
+  // })
+
+  //converted localStorage to useReducer
+  const [todos, dispatch] = useReducer((state, action) => {
+    switch (action.type){
+      case "ADD_TODO":
+
+        //increase the current todoID
+        todoID.current += 1;
+
+        //add the todo 
+        return [
+          ...state,
+          {
+            id: todoID,
+            text: action.text,
+            completed: false
+          }];
+      case "ADD_TODO":
+        return state;
+      case "ADD_TODO":
+        return state;
+      default:
+        return state;
+    }
+  }, [])
 
 
   //Update doc title
@@ -42,20 +67,7 @@ export default function ToDoApp(){
   const handleNewSubmit = (e) => {
 
     e.preventDefault();
-    
-    //increase the current todoID
-    todoID.current += 1;
-
-    //add the todo 
-    updateTodos(prevTodos => [
-        ...prevTodos,
-        {
-          id: todoID.current, 
-          text: newTodo, 
-          completed: false
-        }
-      ]);
-    
+    dispatch({type: "ADD_TODO", text: newTodo})    
     updateNewTodo("");
   }
 
