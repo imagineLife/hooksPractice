@@ -40,8 +40,8 @@ export default function ToDoApp(){
             text: action.text,
             completed: false
           }];
-      case "ADD_TODO":
-        return state;
+      case "DELETE_TODO":
+        return state.filter(todo => todo.id !== action.id)
       case "ADD_TODO":
         return state;
       default:
@@ -72,7 +72,7 @@ export default function ToDoApp(){
   }
 
   const handleDelete = (id, e) => {
-    updateTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+    dispatch({type:"DELETE_TODO", id})
   }
   
   const handleCompletedToggle = (id, e) => {
