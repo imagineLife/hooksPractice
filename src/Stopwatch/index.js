@@ -35,7 +35,12 @@ export function Stopwatch(){
   //referenced for stopping the stopwatch 
   const intervalRef = React.useRef(null)
 
-  //clickFn
+  //clean-up the interval on componentUnMount
+  React.useEffect(() => {
+  	return () => clearInterval(intervalRef.current)
+  })
+  
+  //click start-stop
   function handleRunClick(){
   	//stop the watch
   	if(running){
@@ -53,6 +58,7 @@ export function Stopwatch(){
   	setRunning(!running)
   }
 
+  //click clear
   function handleClearClick(){
   	clearInterval(intervalRef.current)
   	setTimeLapse(0)
