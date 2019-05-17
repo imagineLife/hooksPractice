@@ -4,7 +4,7 @@
   "description": "webpack babel react starter",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack-dev-server --mode production",
     "dev": "webpack --mode development",
     "start": "webpack-dev-server --mode development --open"
@@ -21,10 +21,20 @@
   },
   "homepage": "https://github.com/imagineLife/wp-babel-react#readme",
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.8.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.13.0",
+    "jest": "^24.8.0",
     "css-loader": "^0.28.11",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
@@ -37,10 +47,7 @@
   },
   "dependencies": {
     "@reach/dialog": "^0.1.3",
-    "babel-jest": "^24.8.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "emotion": "^9.2.12",
-    "jest": "^24.8.0",
     "react-emotion": "^9.2.12"
   },
   "jest": {
@@ -48,7 +55,7 @@
       "<rootDir>/enzyme.setup.js"
     ],
     "moduleNameMapper": {
-      "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js"
+      "\\/src/(css|less)$": "<rootDir>/src/__mocks__/styleMock.js"
     }
   }
 }
