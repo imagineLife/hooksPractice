@@ -26,15 +26,18 @@ const buttonStyle = {
 // }
 
 export function Stopwatch(){
+  const [timeLapse, setTimeLapse] = React.useState(0)
+  const [running, setRunning] = React.useState(false)
+
   return(
   	<div style={{textAlign: 'center'}}>
   	  <label style={{
   	  	fontSize: '3em',
   	  	display: 'block'
   	  }}>
-  	  	0ms
+  	  	{timeLapse}ms
   	  </label>
-  	  <button style={{buttonStyle}}>Start</button>
+  	  <button style={{buttonStyle}}>{running ? 'Stop' : 'Start'}</button>
   	  <button style={{buttonStyle}}>Clear</button>
   	</div>
   )
