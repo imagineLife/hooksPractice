@@ -53,6 +53,12 @@ export function Stopwatch(){
   	setRunning(!running)
   }
 
+  function handleClearClick(){
+  	clearInterval(intervalRef.current)
+  	setTimeLapse(0)
+  	setRunning(false)
+  }
+
   return(
   	<div style={{textAlign: 'center'}}>
   	  <label style={{
@@ -62,7 +68,7 @@ export function Stopwatch(){
   	  	{timeLapse}ms
   	  </label>
   	  <button style={{buttonStyle}} onClick={handleRunClick}>{running ? 'Stop' : 'Start'}</button>
-  	  <button style={{buttonStyle}}>Clear</button>
+  	  <button style={{buttonStyle}} onClick={handleClearClick}>Clear</button>
   	</div>
   )
 }
