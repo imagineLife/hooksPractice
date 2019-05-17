@@ -11,4 +11,5 @@ import ToDoAppHooks from './ToDoAppHooks';
 
 //simple increment
 import Counter from './Counter'
-ReactDOM.render(<Counter />, document.getElementById("app"));
+import CounterCustomHook from './CounterCustomHook'
+ReactDOM.render(<CounterCustomHook />, document.getElementById("app"));
