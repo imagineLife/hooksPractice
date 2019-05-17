@@ -26,8 +26,28 @@ const buttonStyle = {
 // }
 
 export function Stopwatch(){
+
+  //state
   const [timeLapse, setTimeLapse] = React.useState(0)
   const [running, setRunning] = React.useState(false)
+
+  //clickFn
+  function handleRunClick(){
+  	//stop the watch
+  	if(running){
+
+  	//start the watch
+  	}else{
+  		//time @ start
+  		const startTime = Date.now() - timeLapse;
+  		
+
+  		setInterval(() => {
+  			setTimeLapse(Date.now() - startTime)
+  		}, 0)
+  		setRunning(!running)
+  	}
+  }
 
   return(
   	<div style={{textAlign: 'center'}}>
@@ -37,7 +57,7 @@ export function Stopwatch(){
   	  }}>
   	  	{timeLapse}ms
   	  </label>
-  	  <button style={{buttonStyle}}>{running ? 'Stop' : 'Start'}</button>
+  	  <button style={{buttonStyle}} onClick={handleRunClick}>{running ? 'Stop' : 'Start'}</button>
   	  <button style={{buttonStyle}}>Clear</button>
   	</div>
   )
