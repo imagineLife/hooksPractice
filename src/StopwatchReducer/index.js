@@ -18,6 +18,12 @@ function reducer(state, action){
         timeLapse: action.now - action.startTime
       }
       break;
+
+    case "TOGGLE_RUNNING":
+      return {
+        ...state,
+        running: !state.running
+      }  
     
     default:
       break;
@@ -60,7 +66,7 @@ export function StopwatchReducer(){
   			dispatch({type: 'SET_TIME_LAPSE', now: Date.now(), startTime})
   		}, 0)
   	}
-  	setRunning(!running)
+  	dispatch({type: "TOGGLE_RUNNING"})
   }
 
   //click clear
