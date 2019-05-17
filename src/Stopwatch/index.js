@@ -31,22 +31,26 @@ export function Stopwatch(){
   const [timeLapse, setTimeLapse] = React.useState(0)
   const [running, setRunning] = React.useState(false)
 
+  //stopwatch setInterval reference,
+  //referenced for stopping the stopwatch 
+  const intervalRef = React.useRef(null)
+
   //clickFn
   function handleRunClick(){
   	//stop the watch
   	if(running){
-
+  		clearInterval(intervalRef.current)
   	//start the watch
   	}else{
   		//time @ start
   		const startTime = Date.now() - timeLapse;
   		
-
-  		setInterval(() => {
+  		//setInterval to intervalRef val
+  		intervalRef.current = setInterval(() => {
   			setTimeLapse(Date.now() - startTime)
   		}, 0)
-  		setRunning(!running)
   	}
+  	setRunning(!running)
   }
 
   return(
