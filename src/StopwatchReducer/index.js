@@ -42,7 +42,7 @@ export function StopwatchReducer(){
   		
   		//setInterval to intervalRef val
   		intervalRef.current = setInterval(() => {
-  			setTimeLapse(Date.now() - startTime)
+  			dispatch({type: 'SET_TIME_LAPSE', now: Date.now(), startTime})
   		}, 0)
   	}
   	setRunning(!running)
