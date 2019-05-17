@@ -17,7 +17,6 @@ function reducer(state, action){
         ...state,
         timeLapse: action.now - action.startTime
       }
-      break;
 
     case "TOGGLE_RUNNING":
       return {
@@ -25,22 +24,27 @@ function reducer(state, action){
         running: !state.running
       }  
     
+    case "CLEAR_STOPWATCH":
+      return {
+        ...state,
+        timeLapse: 0,
+        running: false
+      }
+
     default:
-      break;
+      return state;
   }
 }
 
 export function StopwatchReducer(){
+  console.log('HERE');
 
   //Reducer-ed state
   //incl destructured state as first arr element
-  const [{running, lapse}, dispatch] = React.userReducer(reducer, {
+  const [{running, timeLapse}, dispatch] = React.useReducer(reducer, {
     running: false,
-    lapse: 0
+    timeLapse: 0
   })
-
-  const [timeLapse, setTimeLapse] = React.useState(0)
-  const [running, setRunning] = React.useState(false)
 
   //stopwatch setInterval reference,
   //referenced for stopping the stopwatch 
@@ -49,7 +53,7 @@ export function StopwatchReducer(){
   //clean-up the interval on componentUnMount
   React.useEffect(() => {
   	return () => clearInterval(intervalRef.current)
-  })
+  }, [])
   
   //click start-stop
   function handleRunClick(){
@@ -72,8 +76,13 @@ export function StopwatchReducer(){
   //click clear
   function handleClearClick(){
   	clearInterval(intervalRef.current)
-  	setTimeLapse(0)
-  	setRunning(false)
+  	
+    //WAS...
+    // setTimeLapse(0)
+  	// setRunning(false)
+
+    //NOW...
+    dispatch({type:"CLEAR_STOPWATCH"})
   }
 
   return(
