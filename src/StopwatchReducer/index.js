@@ -11,7 +11,13 @@ const buttonStyle = {
 
 export function StopwatchReducer(){
 
-  //state
+  //Reducer-ed state
+  //incl destructured state as first arr element
+  const [{running, lapse}, dispatch] = React.userReducer(reducer, {
+    running: false,
+    lapse: 0
+  })
+
   const [timeLapse, setTimeLapse] = React.useState(0)
   const [running, setRunning] = React.useState(false)
 
