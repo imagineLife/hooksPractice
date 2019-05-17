@@ -13,3 +13,10 @@ export function useCounterComplex(initialState){
 	const inc = () => setCount(count + 1)
 	return {count, inc}
 }
+
+//more complex hook
+export function useCounterMoreComplex(initialState, incVal){
+	const [count, setCount] = useState(initialState)
+	const inc = () => setCount(count + incVal)
+	return {count, inc}
+}
