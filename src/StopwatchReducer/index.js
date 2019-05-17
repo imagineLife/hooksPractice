@@ -9,6 +9,21 @@ const buttonStyle = {
   width: 200
 }
 
+//reducer fn
+function reducer(state, action){
+  switch(action.type){
+    case 'SET_TIME_LAPSE':
+      return {
+        ...state,
+        timeLapse: action.now - action.startTime
+      }
+      break;
+    
+    default:
+      break;
+  }
+}
+
 export function StopwatchReducer(){
 
   //Reducer-ed state
